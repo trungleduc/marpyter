@@ -58,8 +58,7 @@
     "@jupyterlab/coreutils": "^6.0.0-rc.0",
     "@jupyterlab/services": "^7.0.0-rc.0",
     "@lumino/widgets": "^2.1.1",
-    "@marp-team/marp-core": "^3.6.0",
-    "util": "^0.12.5"
+    "@marp-team/marp-core": "^3.6.0"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^4.0.0-rc.0",
