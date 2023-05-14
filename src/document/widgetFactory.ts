@@ -1,15 +1,9 @@
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { ABCWidgetFactory, DocumentRegistry } from '@jupyterlab/docregistry';
-
-import { MarpDocModel } from './docModel';
 import { MarpDocWidget } from '../widget/marpDocumentWidget';
-import { Widget } from '@lumino/widgets';
 import { MarpViewer } from '../widget/marpviewer';
 
-export class MarpDocWidgetFactory extends ABCWidgetFactory<
-  MarpDocWidget,
-  MarpDocModel
-> {
+export class MarpDocWidgetFactory extends ABCWidgetFactory<MarpDocWidget> {
   constructor(options: MarpDocWidgetFactory.IOptions) {
     super(options);
   }
@@ -20,10 +14,8 @@ export class MarpDocWidgetFactory extends ABCWidgetFactory<
    * @param context Contains the information of the file
    * @returns The widget
    */
-  protected createNewWidget(
-    context: DocumentRegistry.IContext<MarpDocModel>
-  ): MarpDocWidget {
-    const content = new MarpViewer({ model: context.model });
+  protected createNewWidget(context: DocumentRegistry.Context): MarpDocWidget {
+    const content = new MarpViewer({ context });
     return new MarpDocWidget({ context, content });
   }
 }

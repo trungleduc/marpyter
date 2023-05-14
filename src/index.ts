@@ -3,19 +3,14 @@ import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
-
 import { WidgetTracker } from '@jupyterlab/apputils';
-import { PathExt } from '@jupyterlab/coreutils';
-
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { ITranslator } from '@jupyterlab/translation';
-import { IMarpViewerTracker } from './token';
-import { MarpViewer } from './widget/marpviewer';
+
 import { MarpDocWidgetFactory } from './document/widgetFactory';
-import { MarpDocModelFactory } from './document/modelFactory';
+import { IMarpViewerTracker } from './token';
 import { MarpDocWidget } from './widget/marpDocumentWidget';
 
-const FACTORY = 'Marp Preview';
 /**
  * Initialization data for the marpyter extension.
  */
@@ -34,7 +29,6 @@ const plugin: JupyterFrontEndPlugin<IMarpViewerTracker> = {
     console.log('JupyterLab extension marpyter is activated!');
     const trans = translator.load('jupyterlab');
     const { docRegistry } = app;
-    // Add the markdown renderer factory.
 
     const namespace = 'marpyter-widget';
     const tracker = new WidgetTracker<MarpDocWidget>({
@@ -43,8 +37,8 @@ const plugin: JupyterFrontEndPlugin<IMarpViewerTracker> = {
 
     const factory = new MarpDocWidgetFactory({
       name: 'Marp Doc',
-      modelName: 'marpdoc-model',
-      fileTypes: ['md'],
+      label: trans.__('Marp Preview'),
+      fileTypes: ['markdown'],
       rendermime
     });
     factory.widgetCreated.connect((sender, widget) => {
@@ -55,18 +49,6 @@ const plugin: JupyterFrontEndPlugin<IMarpViewerTracker> = {
       void tracker.add(widget);
     });
     docRegistry.addWidgetFactory(factory);
-
-    const modelFactory = new MarpDocModelFactory();
-    app.docRegistry.addModelFactory(modelFactory);
-
-    app.docRegistry.addFileType({
-      name: 'md',
-      displayName: 'MD',
-      mimeTypes: ['text/plain'],
-      extensions: ['.md', '.MD'],
-      fileFormat: 'text',
-      contentType: 'file'
-    });
 
     return tracker;
   }
