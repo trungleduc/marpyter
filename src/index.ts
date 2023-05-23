@@ -10,6 +10,7 @@ import { ITranslator } from '@jupyterlab/translation';
 import { MarpDocWidgetFactory } from './document/widgetFactory';
 import { IMarpViewerTracker } from './token';
 import { MarpDocWidget } from './widget/marpDocumentWidget';
+import { marpRendererFactory } from './rendermime/factory';
 
 /**
  * Initialization data for the marpyter extension.
@@ -30,6 +31,7 @@ const plugin: JupyterFrontEndPlugin<IMarpViewerTracker> = {
     const trans = translator.load('jupyterlab');
     const { docRegistry } = app;
 
+    rendermime.addFactory(marpRendererFactory);
     const namespace = 'marpyter-widget';
     const tracker = new WidgetTracker<MarpDocWidget>({
       namespace
@@ -54,4 +56,4 @@ const plugin: JupyterFrontEndPlugin<IMarpViewerTracker> = {
   }
 };
 
-export default plugin;
+export default [plugin];

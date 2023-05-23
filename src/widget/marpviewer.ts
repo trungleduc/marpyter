@@ -4,11 +4,18 @@ import { DocumentRegistry } from '@jupyterlab/docregistry';
 import { PromiseDelegate } from '@lumino/coreutils';
 import { ActivityMonitor } from '@jupyterlab/coreutils';
 import { Message } from '@lumino/messaging';
+import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import { MIMETYPE } from '../rendermime/factory';
+import { RenderedMarp } from '../rendermime/renderer';
 export class MarpViewer extends Widget {
-  constructor(options: { context: DocumentRegistry.Context }) {
+  constructor(options: {
+    context: DocumentRegistry.Context;
+    renderer?: RenderedMarp;
+  }) {
     const node = document.createElement('iframe');
     super({ node });
     this._context = options.context;
+    this._renderer = options.renderer;
 
     void this._context.ready.then(async () => {
       this._renderContent();
@@ -50,18 +57,33 @@ export class MarpViewer extends Widget {
     }
   }
 
-  private _renderContent() {
+  private _renderContent(): void {
     const content = this._context.model.toString();
-    const marp = new Marp();
-    const { html, css } = marp.render(content);
-    const contents = `<style>${css}</style>${html}`;
+
+    if (!this._renderer) {
+      return;
+    }
+
     const body = (this.node as HTMLIFrameElement).contentWindow?.document.body;
+
     if (body) {
-      body.innerHTML = contents;
+      this._renderer
+        .render({
+          trusted: true,
+          data: { [MIMETYPE]: content },
+          metadata: {},
+          setData: () => {
+            /** */
+          }
+        })
+        .then(() => {
+          body.innerHTML = this._renderer!.node.innerHTML;
+        });
     }
   }
   private _context: DocumentRegistry.Context;
   private _ready = new PromiseDelegate<void>();
   private _monitor: ActivityMonitor<DocumentRegistry.IModel, void> | null =
     null;
+  private _renderer: RenderedMarp | undefined;
 }
