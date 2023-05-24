@@ -1,7 +1,7 @@
 {
   "name": "marpyter",
-  "version": "0.1.0",
-  "description": "A JupyterLab extension.",
+  "version": "0.1.0-rc.0",
+  "description": "A JupyterLab extension for Marp.",
   "keywords": [
     "jupyter",
     "jupyterlab",

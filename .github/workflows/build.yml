@@ -31,9 +31,6 @@ jobs:
         set -eux
         python -m pip install .[test]
 
-        jupyter server extension list
-        jupyter server extension list 2>&1 | grep -ie "marpyter.*OK"
-
         jupyter labextension list
         jupyter labextension list 2>&1 | grep -ie "marpyter.*OK"
         python -m jupyterlab.browser_check
@@ -76,10 +73,6 @@ jobs:
         sudo rm -rf $(which node)
 
         pip install "jupyterlab>=4.0.0b0,<5" marpyter*.whl
-
-
-        jupyter server extension list
-        jupyter server extension list 2>&1 | grep -ie "marpyter.*OK"
 
         jupyter labextension list
         jupyter labextension list 2>&1 | grep -ie "marpyter.*OK"
