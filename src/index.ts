@@ -11,6 +11,7 @@ import { MarpDocWidgetFactory } from './document/widgetFactory';
 import { IMarpViewerTracker } from './token';
 import { MarpDocWidget } from './widget/marpDocumentWidget';
 import { marpRendererFactory } from './rendermime/factory';
+import { MarpViewer } from './widget/marpviewer';
 
 /**
  * Initialization data for the marpyter extension.
@@ -37,11 +38,39 @@ const plugin: JupyterFrontEndPlugin<IMarpViewerTracker> = {
       namespace
     });
 
+    app.commands.addCommand('marpyter:download', {
+      execute: args => {
+        const current = tracker.currentWidget;
+        if (current) {
+          const marpViwer = current.content as MarpViewer;
+          const htmlContent = marpViwer.htmlContent;
+          if (!htmlContent) {
+            return;
+          }
+          const element = document.createElement('a');
+          element.setAttribute(
+            'href',
+            'data:text/plain;charset=utf-8,' + encodeURIComponent(htmlContent)
+          );
+          const fileName =
+            current.context.path
+              .split('\\')
+              ?.pop()
+              ?.split('/')
+              ?.pop()
+              ?.split('.')?.[0] ?? 'Untitled';
+
+          element.setAttribute('download', `${fileName}.html`);
+          element.click();
+        }
+      }
+    });
     const factory = new MarpDocWidgetFactory({
       name: 'Marp Doc',
       label: trans.__('Marp Preview'),
       fileTypes: ['markdown'],
-      rendermime
+      rendermime,
+      commands: app.commands
     });
     factory.widgetCreated.connect((sender, widget) => {
       // Notify the widget tracker if restore data needs to update.

@@ -33,7 +33,9 @@ export class MarpViewer extends Widget {
   get ready(): Promise<void> {
     return this._ready.promise;
   }
-
+  get htmlContent(): string | undefined {
+    return this._htmlContent;
+  }
   /**
    * Dispose of the resources held by the widget.
    */
@@ -77,11 +79,12 @@ export class MarpViewer extends Widget {
           }
         })
         .then(() => {
-          body.innerHTML = this._renderer!.node.innerHTML;
+          this._htmlContent = body.innerHTML = this._renderer!.node.innerHTML;
         });
     }
   }
   private _context: DocumentRegistry.Context;
+  private _htmlContent: string | undefined;
   private _ready = new PromiseDelegate<void>();
   private _monitor: ActivityMonitor<DocumentRegistry.IModel, void> | null =
     null;
