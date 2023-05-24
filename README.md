@@ -1,21 +1,30 @@
-# marpyter
+# marpyter - Marp for JupyterLab
 
 [![Github Actions Status](https://github.com/trungleduc/marpyter/workflows/Build/badge.svg)](https://github.com/trungleduc/marpyter/actions/workflows/build.yml)
-A JupyterLab extension.
 
-This extension is composed of a Python package named `marpyter`
-for the server extension and a NPM package named `marpyter`
-for the frontend extension.
+`marpyter` is a JupyterLab extension allowing you to create interactive slide decks using Marp directly within JupyterLab. This extension provides a convenient way for previewing Markdown-based slides in real time.
+
+![marpyter](marpyter.png)
+
+## How to use
+
+To render a markdown file with `marpyter`, from the file browser panel of JupyterLab, users can right-click on the markdown file -> `Open With` -> `Marp Preview`.
+A new panel will be opened with the rendered content of the Marp slides.
 
 ## Requirements
 
-- JupyterLab >= 4.0.0b0
+- JupyterLab >= 4.0.0
 
 ## Install
 
-To install the extension, execute:
+You can install `marpyter` using mamba, pip or conda:
 
 ```bash
+#Using mamba
+mamba install marpyter
+#Using conda
+conda install marpyter
+#Using pip
 pip install marpyter
 ```
 
@@ -24,23 +33,12 @@ pip install marpyter
 To remove the extension, execute:
 
 ```bash
+#Using mamba
+mamba uninstall marpyter
+#Using conda
+conda uninstall marpyter
+#Using pip
 pip uninstall marpyter
-```
-
-## Troubleshoot
-
-If you are seeing the frontend extension, but it is not working, check
-that the server extension is enabled:
-
-```bash
-jupyter server extension list
-```
-
-If the server extension is installed and enabled, but you are not seeing
-the frontend extension, check the frontend extension is installed:
-
-```bash
-jupyter labextension list
 ```
 
 ## Contributing
@@ -60,8 +58,6 @@ The `jlpm` command is JupyterLab's pinned version of
 pip install -e "."
 # Link your development version of the extension with JupyterLab
 jupyter labextension develop . --overwrite
-# Server extension must be manually installed in develop mode
-jupyter server extension enable marpyter
 # Rebuild extension Typescript source after making changes
 jlpm build
 ```
@@ -86,8 +82,6 @@ jupyter lab build --minimize=False
 ### Development uninstall
 
 ```bash
-# Server extension must be manually disabled in develop mode
-jupyter server extension disable marpyter
 pip uninstall marpyter
 ```
 
